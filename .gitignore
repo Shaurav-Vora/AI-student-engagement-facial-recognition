@@ -1,0 +1,25 @@
+# Virtual Environments
+/venv/
+/env/
+
+# Python Cache files (junk files Python makes automatically)
+__pycache__/
+*.py[cod]
+
+# DeepFace / OpenCV Cache files
+/database/*.pkl
+
+# Privacy: Ignore photos in the database (but keep the folder)
+/database/*.jpg
+/database/*.jpeg
+/database/*.png
+
+# Ignore massive AI weights files (You and your teammate will download these locally)
+/weights/*.pt
+/weights/*.onnx
+/weights/*.h5
+/weights/*.weights
+
+# OS generated files
+.DS_Store
+Thumbs.db
