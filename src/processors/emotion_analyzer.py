@@ -23,20 +23,34 @@ class EmotionAnalyzer:
         }
 
     def process(self, frame: np.ndarray, students: List[StudentState]) -> List[StudentState]:
+        h, w = frame.shape[:2]
+        
         for student in students:
             x1, y1, x2, y2 = student.bounding_box
             
             if x2 <= x1 or y2 <= y1:
                 continue
 
-            face_crop = frame[y1:y2, x1:x2]
+            # Add 30% padding around the face for better emotion recognition
+            # FER needs forehead, chin, and some surrounding context
+            bw = x2 - x1
+            bh = y2 - y1
+            pad_x = int(bw * 0.3)
+            pad_y = int(bh * 0.3)
+            px1 = max(0, x1 - pad_x)
+            py1 = max(0, y1 - pad_y)
+            px2 = min(w, x2 + pad_x)
+            py2 = min(h, y2 + pad_y)
+
+            face_crop = frame[py1:py2, px1:px2]
             
             try:
                 emotion, score = self.detector.top_emotion(face_crop)
             except Exception:
                 emotion = None
+                score = 0.0
 
-            if emotion:
+            if emotion and score and score >= 0.05:
                 student.fer_emotion = emotion
                 student.engagement_state = self.engagement_mapping.get(emotion, "Unknown")
             else:

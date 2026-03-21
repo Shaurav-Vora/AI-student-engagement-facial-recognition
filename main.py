@@ -175,23 +175,13 @@ def main():
                 
                 # Ensure valid crop
                 if x2 > x1 and y2 > y1:
-                    face_crop = context.frame[y1:y2, x1:x2]
-                    
                     # Pause and ask for name in the terminal
                     print("\n--- REGISTRATION MODE ---")
                     name = input("Enter student name: ")
                     
-                    if name.strip(): # Make sure they didn't just hit enter
-                        # Save the image
-                        file_path = f"database/{name}.jpg"
-                        cv2.imwrite(file_path, face_crop)
-                        print(f"SUCCESS: Saved {name} to {file_path}")
-                        
-                        # Delete the DeepFace cache so it rebuilds on the next frame
-                        pkl_path = "database/representations_vgg_face.pkl"
-                        if os.path.exists(pkl_path):
-                            os.remove(pkl_path)
-                            print("Cleared DeepFace cache. System will lag for a second while it rebuilds...")
+                    if name.strip():
+                        face_recognizer.register(context.frame, student.bounding_box, name.strip())
+                        print(f"SUCCESS: Registered '{name.strip()}'")
                     else:
                         print("Registration cancelled: No name entered.")
             else:
