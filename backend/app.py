@@ -59,8 +59,12 @@ def start_pipeline():
                     "name": s.name,
                     "fer_emotion": s.fer_emotion,
                     "engagement_state": s.engagement_state,
-                    "confidence": s.confidence,
-                    "bounding_box": s.bounding_box
+                    "confidence": float(s.confidence),
+                    "bounding_box": s.bounding_box,
+                    "ear_score": float(s.ear_score) if s.ear_score is not None else None,
+                    "blink_rate": float(s.blink_rate) if s.blink_rate is not None else None,
+                    "gaze_direction": s.gaze_direction,
+                    "attention_score": float(s.attention_score) if s.attention_score is not None else None
                 })
 
             # Update globals safely

@@ -235,9 +235,28 @@ function App() {
                       </div>
                     </div>
                     
-                    <div className="text-right">
-                      <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Emotion</div>
-                      <div className="text-sm font-medium text-slate-300 capitalize">{student.fer_emotion}</div>
+                    <div className="flex gap-6 items-center">
+                      <div className="text-right">
+                        <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Gaze</div>
+                        <div className={`text-sm font-medium capitalize ${
+                          student.gaze_direction === 'Forward' ? 'text-emerald-400' : 'text-amber-400'
+                        }`}>
+                          {student.gaze_direction || 'N/A'}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Attention</div>
+                        <div className={`text-sm font-bold ${
+                          student.attention_score >= 80 ? 'text-emerald-400' : 
+                          student.attention_score >= 50 ? 'text-amber-400' : 'text-rose-400'
+                        }`}>
+                          {student.attention_score != null ? `${student.attention_score.toFixed(0)}%` : 'N/A'}
+                        </div>
+                      </div>
+                      <div className="text-right border-l border-slate-700 pl-4 ml-2">
+                        <div className="text-xs text-slate-500 uppercase tracking-wider mb-1">Emotion</div>
+                        <div className="text-sm font-medium text-slate-300 capitalize">{student.fer_emotion}</div>
+                      </div>
                     </div>
                   </div>
                 )

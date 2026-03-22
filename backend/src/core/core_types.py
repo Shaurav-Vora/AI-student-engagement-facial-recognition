@@ -22,6 +22,11 @@ class StudentState:
     engagement_score: Optional[float] = None
     fer_emotion: Optional[str] = None
     engagement_state: Optional[str] = None
+    
+    # Attention Metrics
+    blink_rate: Optional[float] = None
+    gaze_direction: Optional[str] = None
+    attention_score: Optional[float] = None
 
     name: Optional[str] = "Unknown"
 

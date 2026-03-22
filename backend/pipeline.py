@@ -9,6 +9,7 @@ from src.core.core_types import FrameContext
 from src.models.yunet_detector import YuNetDetector
 from src.processors.emotion_analyzer import EmotionAnalyzer
 from src.processors.face_recognizer import FaceRecognizer
+from src.processors.attention_analyzer import AttentionAnalyzer
 
 # Get absolute path to the backend directory
 BACKEND_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -27,6 +28,7 @@ class ClassEngagementPipeline:
         self.yunet_detector = YuNetDetector(config)
         self.emotion_analyzer = EmotionAnalyzer()
         self.face_recognizer = FaceRecognizer(db_path=db_path, model_path=sface_path)
+        self.attention_analyzer = AttentionAnalyzer()
 
     def process_frame(self, frame: np.ndarray) -> FrameContext:
         """Processes a single frame, updates students list, and returns the context."""
@@ -36,10 +38,11 @@ class ClassEngagementPipeline:
         context.students = self.yunet_detector.detect(context.frame)
         self.detector_used = "YuNet"
 
-        # 2. Identity & Emotion Processing
+        # 2. Identity & Emotion & Attention Processing
         if len(context.students) > 0:
             context.students = self.face_recognizer.process(context.frame, context.students)
             context.students = self.emotion_analyzer.process(context.frame, context.students)
+            context.students = self.attention_analyzer.process(context.frame, context.students)
 
         return context
 
